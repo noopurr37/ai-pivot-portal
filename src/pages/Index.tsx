@@ -4,6 +4,7 @@ import { Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChatSidebar } from "@/components/ChatSidebar";
+
 export default function Index() {
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -60,31 +61,60 @@ export default function Index() {
   };
   const renderFilePreview = () => {
     if (!uploadedFile || !filePreview) return null;
+
     if (uploadedFile.type.startsWith('image/')) {
-      return <div className="relative">
-          <img src={filePreview} alt={uploadedFile.name} className="max-w-full max-h-96 rounded-lg shadow-md" />
-        </div>;
+      return (
+        <div className="flex justify-center">
+          <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg">
+            <img 
+              src={filePreview} 
+              alt={uploadedFile.name} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      );
     } else if (uploadedFile.type.startsWith('video/')) {
-      return <div className="relative">
-          <video src={filePreview} controls className="max-w-full max-h-96 rounded-lg shadow-md">
-            Your browser does not support the video tag.
-          </video>
-        </div>;
+      return (
+        <div className="flex justify-center">
+          <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg">
+            <video 
+              src={filePreview} 
+              controls 
+              className="w-full h-full object-cover"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      );
     } else if (uploadedFile.type.startsWith('text/') || uploadedFile.name.endsWith('.txt') || uploadedFile.name.endsWith('.md')) {
-      return <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
-          <pre className="whitespace-pre-wrap text-sm max-h-96 overflow-y-auto">
-            {filePreview}
-          </pre>
-        </div>;
+      return (
+        <div className="flex justify-center">
+          <div className="w-64 h-64 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
+            <div className="p-4 text-center overflow-y-auto max-h-full">
+              <pre className="whitespace-pre-wrap text-xs leading-tight">
+                {filePreview.substring(0, 200)}...
+              </pre>
+            </div>
+          </div>
+        </div>
+      );
     } else {
-      return <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md text-center">
-          <p className="text-gray-600 dark:text-gray-400">
-            File uploaded: {uploadedFile.name}
-          </p>
-          <p className="text-sm text-gray-500">
-            Preview not available for this file type
-          </p>
-        </div>;
+      return (
+        <div className="flex justify-center">
+          <div className="w-64 h-64 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white shadow-lg flex items-center justify-center">
+            <div className="text-center p-4">
+              <p className="text-gray-600 dark:text-gray-400 font-medium">
+                {uploadedFile.name}
+              </p>
+              <p className="text-sm text-gray-500 mt-2">
+                Preview not available
+              </p>
+            </div>
+          </div>
+        </div>
+      );
     }
   };
   return <SidebarProvider>
