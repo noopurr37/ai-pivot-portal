@@ -14,6 +14,13 @@ interface Message {
   timestamp: Date;
 }
 
+// Helper to convert local messages to OpenAI API format
+const toOpenAIMessages = (messages: Message[]) =>
+  messages.map((msg) => ({
+    role: msg.role,
+    content: msg.content,
+  }));
+
 export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -45,27 +52,37 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      // TODO: Replace with actual LLM API call
-      // For now, using a mock response
-      const mockResponse = await new Promise<string>((resolve) => {
-        setTimeout(() => {
-          resolve(`I received your message: "${userMessage.content}". This is a mock response. Please integrate with your preferred LLM API.`);
-        }, 1000);
+      // Call our Supabase Edge Function
+      const res = await fetch("/functions/v1/openai-chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: "Be helpful, positive, and concise." },
+            ...toOpenAIMessages([...messages, userMessage])
+          ],
+        }),
       });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Unknown error");
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: mockResponse,
+        content: data.content,
         role: 'assistant',
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, assistantMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending message:', error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: error?.message || "Failed to send message. Please try again.",
         variant: "destructive",
       });
     } finally {
