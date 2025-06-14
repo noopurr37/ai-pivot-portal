@@ -7,7 +7,7 @@ type Project = {
   mediaType: "image" | "video" | "code";
   media: string;
   code?: string;
-  tags?: string[];
+  tags?: readonly string[];
   demoUrl?: string;
 };
 
