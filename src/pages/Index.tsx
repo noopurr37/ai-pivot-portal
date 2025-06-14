@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,8 +54,14 @@ export default function Index() {
 
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
-          <div className="flex gap-2">
-            <Button onClick={handleUploadClick} variant="outline" size="icon" className="h-12 w-12 shrink-0">
+          {/* Move upload button above the Personalize button and center it */}
+          <div className="flex justify-center">
+            <Button
+              onClick={handleUploadClick}
+              variant="outline"
+              size="icon"
+              className="h-12 w-12 shrink-0"
+            >
               <Upload className="h-4 w-4" />
             </Button>
             <input
@@ -66,7 +71,12 @@ export default function Index() {
               onChange={handleFileChange}
             />
           </div>
-          <Button onClick={handleSend} className="w-full" disabled={!message.trim()}>
+          <Button
+            onClick={handleSend}
+            className="w-full"
+            disabled={!message.trim()}
+            variant="secondary"
+          >
             Personalize
           </Button>
           <Button onClick={handleChatbot} variant="secondary" className="w-full">
