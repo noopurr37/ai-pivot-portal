@@ -30,7 +30,7 @@ export default function Index() {
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
           <Textarea
-            placeholder="Paste your resume content here or ask questions about resume optimization..."
+            placeholder="Personalize your Digital Twin resume."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             className="min-h-[120px] resize-none"
