@@ -10,12 +10,25 @@ const corsHeaders = {
 };
 
 serve(async (req: Request) => {
-  // Handle preflight
+  // Handle preflight (CORS) - respond with 204 and no body
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, {
+      status: 204,
+      headers: corsHeaders,
+    });
   }
 
   try {
+    // Add request logging for future debugging
+    const reqClone = req.clone();
+    let requestBody = '';
+    try {
+      requestBody = await reqClone.text();
+      console.log('Incoming request body:', requestBody);
+    } catch (logErr) {
+      console.log('Failed to log request body:', logErr);
+    }
+
     const { messages } = await req.json();
 
     if (!Array.isArray(messages)) {
