@@ -152,7 +152,7 @@ export default function Index() {
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-light tracking-tight">
+          <h1 className="text-4xl tracking-tight text-slate-100 font-thin md:text-7xl">
             READ.ME
           </h1>
           <p className="text-slate-50 text-3xl font-thin">
