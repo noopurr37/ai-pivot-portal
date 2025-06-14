@@ -31,7 +31,14 @@ export function ChatSidebar({ isOpen, onClose }: ChatSidebarProps) {
             AI Assistant
           </SheetTitle>
         </SheetHeader>
-
+        {/* Instruction */}
+        <div className="bg-yellow-100 dark:bg-yellow-900 border-b border-yellow-300 dark:border-yellow-800 text-yellow-900 dark:text-yellow-100 p-4 flex items-center gap-2">
+          <Bot className="h-5 w-5 text-yellow-700 dark:text-yellow-200" />
+          <span>
+            <strong>My name is Read Me.</strong> I can answer all questions about Noopur's resume.
+            If you upload a resume, I will use its contents to help answer your questions.
+          </span>
+        </div>
         <ChatSidebarMessages 
           messages={messages}
           isLoading={isLoading}
