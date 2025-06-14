@@ -1,16 +1,16 @@
 
-import { Brain, Code, Database, Activity, Layers, Chip } from "lucide-react";
+import { Brain, Code, Database, Activity, Layers, Bot, Network } from "lucide-react";
 
 const skills = [
   { name: "Python", icon: <Code className="text-yellow-400" /> },
   { name: "TypeScript", icon: <Code className="text-sky-500" /> },
   { name: "TensorFlow", icon: <Brain className="text-orange-500" /> },
   { name: "PyTorch", icon: <Brain className="text-red-500" /> },
-  { name: "OpenAI API", icon: <Chip className="text-violet-400" /> },
+  { name: "OpenAI API", icon: <Bot className="text-violet-400" /> },
   { name: "Computer Vision", icon: <Activity className="text-green-400" /> },
   { name: "NLP", icon: <Layers className="text-cyan-500" /> },
   { name: "Data Engineering", icon: <Database className="text-teal-400" /> },
-  { name: "LangChain", icon: <Chip className="text-fuchsia-400" /> },
+  { name: "LangChain", icon: <Network className="text-fuchsia-400" /> },
   { name: "FastAPI", icon: <Code className="text-indigo-400" /> }
 ];
 
