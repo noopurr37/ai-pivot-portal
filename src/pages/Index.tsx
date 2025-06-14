@@ -187,11 +187,7 @@ export default function Index() {
         {/* Embedded Chat Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           {/* Chat Header */}
-          <div className="bg-yellow-100 dark:bg-yellow-900 border-b border-yellow-300 dark:border-yellow-800 text-yellow-900 dark:text-yellow-100 p-4 flex items-center gap-2">
-            <span className="text-sm">
-              <strong>My name is Read Me.</strong> I can answer all questions about resumes.
-            </span>
-          </div>
+          
           
           {/* Chat Messages */}
           <div className="h-96 flex flex-col">
