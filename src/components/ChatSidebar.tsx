@@ -76,9 +76,30 @@ export function ChatSidebar({ isOpen, onClose }: ChatSidebarProps) {
         }),
       });
 
-      const data = await res.json();
+      if (!res.ok) {
+        // Attempt to read the error message if present
+        let errorText = '';
+        try {
+          errorText = await res.text();
+        } catch (err) {
+          errorText = 'No response body';
+        }
+        console.error(
+          `Error from Edge Function (status ${res.status}):\n${errorText}`
+        );
+        let errorMessage = `Edge Function error (${res.status})`;
+        if (res.status === 404) {
+          errorMessage = "Chatbot backend not found (404). Please check that the openai-chat Edge Function is deployed.";
+        }
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        return;
+      }
 
-      if (!res.ok) throw new Error(data.error || "Unknown error");
+      const data = await res.json();
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
