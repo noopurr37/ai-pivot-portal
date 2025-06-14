@@ -23,7 +23,7 @@ export default function Index() {
             Upload Your Resume
           </h1>
           <p className="text-xl text-muted-foreground">
-            Get AI-powered insights and feedback on your resume
+            Humanize your Resume with a Digital Twin Profile
           </p>
         </div>
 
