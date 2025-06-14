@@ -176,6 +176,15 @@ export default function Index() {
             <Button onClick={handleChatbot} variant="secondary" className="w-full">
               Multimodal Bot
             </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="w-full bg-gray-100 text-gray-800 hover:bg-gray-200 border-gray-300"
+            >
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                Meet Me on Roam
+              </a>
+            </Button>
           </div>
         </div>
 
