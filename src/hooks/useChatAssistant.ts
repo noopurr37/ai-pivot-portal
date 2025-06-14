@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useResume } from "@/context/ResumeContext";
@@ -63,9 +64,24 @@ export function useChatAssistant() {
         }),
       });
 
-      const data = await res.json();
+      // FIX: handle non-200 responses before attempting res.json()
+      if (!res.ok) {
+        let errorText = '';
+        try {
+          errorText = await res.text();
+        } catch (err) {
+          errorText = 'No response body';
+        }
+        let errorMessage = `Edge Function error (${res.status})`;
+        if (res.status === 404) {
+          errorMessage = "Chatbot backend not found (404). Please check that the openai-chat Edge Function is deployed.";
+        } else if (errorText) {
+          errorMessage += `: ${errorText}`;
+        }
+        throw new Error(errorMessage);
+      }
 
-      if (!res.ok) throw new Error(data.error || "Unknown error");
+      const data = await res.json();
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -114,3 +130,4 @@ export function useChatAssistant() {
     textareaRef,
   };
 }
+
