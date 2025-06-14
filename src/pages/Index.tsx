@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, X, Mic, MicOff } from "lucide-react";
@@ -10,14 +9,15 @@ import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
 import { useChatAssistant } from "@/hooks/useChatAssistant";
 import { useVoiceInput } from "@/hooks/useVoiceInput";
-
 export default function Index() {
   const [message, setMessage] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const navigate = useNavigate();
 
   // Chat functionality
@@ -30,7 +30,7 @@ export default function Index() {
     handleKeyPress,
     handleInputChange,
     messagesEndRef,
-    textareaRef,
+    textareaRef
   } = useChatAssistant();
 
   // Voice input hook for chat input
@@ -40,19 +40,19 @@ export default function Index() {
     startRecording,
     stopRecording
   } = useVoiceInput({
-    onResult: (text) => {
+    onResult: text => {
       // Place transcript in chat input
       setInputMessage(text ?? "");
     }
   });
 
   // FIX: Access setResumeText from ResumeContext
-  const { setResumeText } = useResume();
-
+  const {
+    setResumeText
+  } = useResume();
   const handlePersonalizeClick = () => {
     fileInputRef.current?.click();
   };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -93,17 +93,14 @@ export default function Index() {
       event.target.value = "";
     }
   };
-
   const handleRemoveFile = () => {
     setUploadedFile(null);
     setFilePreview(null);
     setShowVideoPlayer(false);
   };
-
   const handleChatbot = () => {
     navigate('/chatbot');
   };
-
   const renderFilePreview = () => {
     if (!uploadedFile || !filePreview) return null;
     if (uploadedFile.type.startsWith('image/')) {
@@ -151,7 +148,6 @@ export default function Index() {
         </div>;
     }
   };
-
   return <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
@@ -174,9 +170,7 @@ export default function Index() {
               Let Me Read Your Resume
               <Upload className="h-4 w-4" />
             </Button>
-            <Button onClick={handleChatbot} variant="secondary" className="w-full">
-              Multimodal Assistant
-            </Button>
+            
           </div>
         </div>
 
@@ -202,11 +196,7 @@ export default function Index() {
           {/* Chat Messages */}
           <div className="h-96 flex flex-col">
             <div className="flex-1 overflow-hidden">
-              <ChatMessages
-                messages={messages}
-                isLoading={isLoading}
-                messagesEndRef={messagesEndRef}
-              />
+              <ChatMessages messages={messages} isLoading={isLoading} messagesEndRef={messagesEndRef} />
             </div>
             
             {/* Chat Input */}
@@ -214,41 +204,15 @@ export default function Index() {
               <div className="flex gap-2 items-end">
                 {/* Voice Input Button */}
                 <div className="mb-2 flex items-center">
-                  <Button
-                    type="button"
-                    size="icon"
-                    variant={isRecording ? "destructive" : "secondary"}
-                    onClick={isRecording ? stopRecording : startRecording}
-                    disabled={isLoading || isTranscribing}
-                    aria-label={isRecording ? "Stop voice input" : "Start voice input"}
-                    className={
-                      isRecording
-                        ? "animate-pulse bg-red-600 hover:bg-red-700"
-                        : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300"
-                    }
-                    tabIndex={-1}
-                  >
-                    {isRecording ? (
-                      <MicOff className="h-5 w-5" />
-                    ) : (
-                      <Mic className="h-5 w-5" />
-                    )}
+                  <Button type="button" size="icon" variant={isRecording ? "destructive" : "secondary"} onClick={isRecording ? stopRecording : startRecording} disabled={isLoading || isTranscribing} aria-label={isRecording ? "Stop voice input" : "Start voice input"} className={isRecording ? "animate-pulse bg-red-600 hover:bg-red-700" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300"} tabIndex={-1}>
+                    {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
                   </Button>
-                  {isTranscribing && (
-                    <span className="ml-2 text-xs text-blue-600 dark:text-blue-300 animate-pulse">
+                  {isTranscribing && <span className="ml-2 text-xs text-blue-600 dark:text-blue-300 animate-pulse">
                       Transcribing voice...
-                    </span>
-                  )}
+                    </span>}
                 </div>
                 <div className="flex-1">
-                  <ChatInput
-                    inputMessage={inputMessage}
-                    onInputChange={handleInputChange}
-                    onKeyPress={handleKeyPress}
-                    onSend={handleSendMessage}
-                    textareaRef={textareaRef}
-                    isLoading={isLoading}
-                  />
+                  <ChatInput inputMessage={inputMessage} onInputChange={handleInputChange} onKeyPress={handleKeyPress} onSend={handleSendMessage} textareaRef={textareaRef} isLoading={isLoading} />
                 </div>
               </div>
             </div>
