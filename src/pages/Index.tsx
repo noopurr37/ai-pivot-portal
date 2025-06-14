@@ -30,7 +30,7 @@ export default function Index() {
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
           <div className="flex gap-2">
-            <Textarea placeholder="Personalize your Digital Twin resume." value={message} onChange={e => setMessage(e.target.value)} className="min-h-[500px] resize-none flex-1" />
+            <Textarea placeholder="Personalize your Digital Twin resume." value={message} onChange={e => setMessage(e.target.value)} className="min-h-[10px] resize-none flex-1" />
             <Button onClick={handleUpload} variant="outline" size="icon" className="h-12 w-12 shrink-0 text-4xl">
               <Upload className="h-4 w-4" />
             </Button>
