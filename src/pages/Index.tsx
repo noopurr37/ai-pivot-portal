@@ -1,4 +1,3 @@
-
 import HeroSection from "../components/HeroSection";
 import ProjectsGrid from "../components/ProjectsGrid";
 import SkillsPanel from "../components/SkillsPanel";
@@ -34,7 +33,7 @@ const DEMO_PROJECTS = [
     tags: ["Timeseries", "TensorFlow", "Python", "Finance"],
     demoUrl: "#",
   }
-];
+] as const;
 
 export default function Index() {
   const [selectedProject, setSelectedProject] = useState(null);
