@@ -192,7 +192,7 @@ export default function Index() {
               <p className="text-sm text-muted-foreground">
                 {uploadedFile.name} ({(uploadedFile.size / 1024).toFixed(1)} KB)
               </p>
-      
+              {renderFilePreview()}
             </div>
           </div>
         )}
