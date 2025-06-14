@@ -40,7 +40,7 @@ export default function Index() {
             className="w-full"
             disabled={!message.trim()}
           >
-            Send Message
+            Personalize
           </Button>
         </div>
       </div>
