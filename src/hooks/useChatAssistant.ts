@@ -47,14 +47,8 @@ export function useChatAssistant() {
     }
 
     try {
-      // Expanded logic for context system prompt
-      const systemContent = [
-        "My name is Read Me. I can answer all questions about Noopur's resume.",
-        "I am an AI assistant. Answer user questions using Noopur's resume below if possible.",
-        resumeText
-          ? `Resume reference (use to inform your answers):\n${resumeText.substring(0, 1600)}`
-          : ""
-      ].join("\n\n");
+      // NEW: Use a minimal system message as instructed
+      const systemContent = "My name is Read Me. I can answer all questions about Noopur's resume.";
 
       const res = await fetch("/functions/v1/openai-chat", {
         method: "POST",
