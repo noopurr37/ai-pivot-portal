@@ -4,12 +4,14 @@ import { Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChatSidebar } from "@/components/ChatSidebar";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 export default function Index() {
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const {
     toast
@@ -55,6 +57,7 @@ export default function Index() {
   const handleRemoveFile = () => {
     setUploadedFile(null);
     setFilePreview(null);
+    setShowVideoPlayer(false);
   };
   const handleChatbot = () => {
     setIsChatOpen(true);
@@ -75,19 +78,37 @@ export default function Index() {
         </div>
       );
     } else if (uploadedFile.type.startsWith('video/')) {
-      return (
-        <div className="flex justify-center">
-          <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg">
-            <video 
-              src={filePreview} 
-              controls 
-              className="w-full h-full object-cover"
+      if (showVideoPlayer) {
+        return (
+          <VideoPlayer 
+            src={filePreview} 
+            fileName={uploadedFile.name}
+            onClose={() => setShowVideoPlayer(false)}
+          />
+        );
+      } else {
+        return (
+          <div className="flex justify-center">
+            <div 
+              className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg cursor-pointer relative group"
+              onClick={() => setShowVideoPlayer(true)}
             >
-              Your browser does not support the video tag.
-            </video>
+              <video 
+                src={filePreview} 
+                className="w-full h-full object-cover"
+                muted
+              />
+              <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="bg-white/90 rounded-full p-3">
+                  <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
     } else if (uploadedFile.type.startsWith('text/') || uploadedFile.name.endsWith('.txt') || uploadedFile.name.endsWith('.md')) {
       return (
         <div className="flex justify-center">
@@ -133,9 +154,13 @@ export default function Index() {
           {/* Chat Interface */}
           <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
             <div className="flex flex-col gap-4">
-              <input ref={fileInputRef} type="file" style={{
-              display: "none"
-            }} onChange={handleFileChange} accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" />
+              <input 
+                ref={fileInputRef} 
+                type="file" 
+                style={{ display: "none" }} 
+                onChange={handleFileChange} 
+                accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" 
+              />
               <Button onClick={handlePersonalizeClick} variant="secondary" className="w-full flex items-center justify-center gap-2 rounded-lg">
                 Let Me Read Your Resume
                 <Upload className="h-4 w-4" />
@@ -147,7 +172,8 @@ export default function Index() {
           </div>
 
           {/* File Preview Section */}
-          {uploadedFile && <div className="bg-card p-6 rounded-lg shadow-lg">
+          {uploadedFile && (
+            <div className="bg-card p-6 rounded-lg shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Uploaded File</h3>
                 <Button onClick={handleRemoveFile} variant="ghost" size="icon" className="h-8 w-8">
@@ -160,7 +186,8 @@ export default function Index() {
                 </p>
                 {renderFilePreview()}
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
       
