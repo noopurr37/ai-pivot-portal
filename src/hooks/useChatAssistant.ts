@@ -16,6 +16,9 @@ const toOpenAIMessages = (messages: Message[]) =>
     content: msg.content,
   }));
 
+// EMBEDDED: Flowise API endpoint for inference
+const FLOWISE_API_URL = "https://cloud.flowiseai.com/api/v1/prediction/9064846d-e68d-4a0f-8a1d-ef017f7197df";
+
 export function useChatAssistant() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -48,23 +51,20 @@ export function useChatAssistant() {
     }
 
     try {
-      // NEW: Use a minimal system message as instructed
-      const systemContent = "My name is Read Me. I can answer all questions about Noopur's resume.";
+      // Prepare payload for Flowise API
+      const payload: Record<string, any> = { question: inputMessage };
 
-      const res = await fetch("/functions/v1/openai-chat", {
+      // Optionally, attach resume text if you wish to send user context
+      // if (resumeText) payload.resume = resumeText;
+
+      const res = await fetch(FLOWISE_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: systemContent },
-            ...toOpenAIMessages([...messages, userMessage])
-          ],
-        }),
+        body: JSON.stringify(payload),
       });
 
-      // FIX: handle non-200 responses before attempting res.json()
       if (!res.ok) {
         let errorText = '';
         try {
@@ -72,20 +72,20 @@ export function useChatAssistant() {
         } catch (err) {
           errorText = 'No response body';
         }
-        let errorMessage = `Edge Function error (${res.status})`;
-        if (res.status === 404) {
-          errorMessage = "Chatbot backend not found (404). Please check that the openai-chat Edge Function is deployed.";
-        } else if (errorText) {
+        let errorMessage = `Flowise API error (${res.status})`;
+        if (errorText) {
           errorMessage += `: ${errorText}`;
         }
         throw new Error(errorMessage);
       }
 
       const data = await res.json();
+      // Expecting Flowise returns { text: "answer" } or { response: "answer" }
+      const reply = data.text ?? data.response ?? JSON.stringify(data);
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.content,
+        content: reply,
         role: 'assistant',
         timestamp: new Date()
       };
@@ -94,7 +94,7 @@ export function useChatAssistant() {
     } catch (error: any) {
       console.error('Error sending message:', error);
       toast({
-        title: "Error",
+        title: "API Error",
         description: error?.message || "Failed to send message. Please try again.",
         variant: "destructive",
       });
