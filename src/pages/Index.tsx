@@ -1,15 +1,15 @@
 
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Upload, X } from "lucide-react";
+import { Upload, X, Mic, MicOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { useResume } from "@/context/ResumeContext";
 import { useNavigate } from "react-router-dom";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
-import ChatVoiceInputButton from "@/components/chat/ChatVoiceInputButton";
 import { useChatAssistant } from "@/hooks/useChatAssistant";
+import { useVoiceInput } from "@/hooks/useVoiceInput";
 
 export default function Index() {
   const [message, setMessage] = useState("");
@@ -32,6 +32,19 @@ export default function Index() {
     messagesEndRef,
     textareaRef,
   } = useChatAssistant();
+
+  // Voice input hook for chat input
+  const {
+    isRecording,
+    isTranscribing,
+    startRecording,
+    stopRecording
+  } = useVoiceInput({
+    onResult: (text) => {
+      // Place transcript in chat input
+      setInputMessage(text ?? "");
+    }
+  });
 
   // FIX: Access setResumeText from ResumeContext
   const { setResumeText } = useResume();
@@ -199,11 +212,34 @@ export default function Index() {
             {/* Chat Input */}
             <div className="border-t bg-white dark:bg-gray-800 p-4">
               <div className="flex gap-2 items-end">
-                <ChatVoiceInputButton
-                  isLoading={isLoading}
-                  onVoiceResult={setInputMessage}
-                  className="mb-2"
-                />
+                {/* Voice Input Button */}
+                <div className="mb-2 flex items-center">
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant={isRecording ? "destructive" : "secondary"}
+                    onClick={isRecording ? stopRecording : startRecording}
+                    disabled={isLoading || isTranscribing}
+                    aria-label={isRecording ? "Stop voice input" : "Start voice input"}
+                    className={
+                      isRecording
+                        ? "animate-pulse bg-red-600 hover:bg-red-700"
+                        : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300"
+                    }
+                    tabIndex={-1}
+                  >
+                    {isRecording ? (
+                      <MicOff className="h-5 w-5" />
+                    ) : (
+                      <Mic className="h-5 w-5" />
+                    )}
+                  </Button>
+                  {isTranscribing && (
+                    <span className="ml-2 text-xs text-blue-600 dark:text-blue-300 animate-pulse">
+                      Transcribing voice...
+                    </span>
+                  )}
+                </div>
                 <div className="flex-1">
                   <ChatInput
                     inputMessage={inputMessage}
@@ -221,3 +257,5 @@ export default function Index() {
       </div>
     </div>;
 }
+
+// ... end of file
