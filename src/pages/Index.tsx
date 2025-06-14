@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { ResumeProvider, useResume } from "@/context/ResumeContext";
 
 export default function Index() {
   const [message, setMessage] = useState("");
@@ -44,11 +45,14 @@ export default function Index() {
       } else if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
         const reader = new FileReader();
         reader.onload = e => {
-          setFilePreview(e.target?.result as string);
+          const text = e.target?.result as string;
+          setFilePreview(text);
+          setResumeText(text); // Save resume text to context
         };
         reader.readAsText(file);
       } else {
         setFilePreview(null);
+        setResumeText(null);
       }
       console.log("Selected file:", file);
       event.target.value = "";
@@ -138,7 +142,8 @@ export default function Index() {
       );
     }
   };
-  return <SidebarProvider>
+  return (
+    <ResumeProvider>
       <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
         <div className="max-w-2xl w-full space-y-8">
           {/* Hero Headline */}
@@ -192,5 +197,6 @@ export default function Index() {
       </div>
       
       <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-    </SidebarProvider>;
+    </ResumeProvider>
+  );
 }

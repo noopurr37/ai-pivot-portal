@@ -1,6 +1,6 @@
-
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useResume } from "@/context/ResumeContext";
 
 export interface Message {
   id: string;
@@ -22,6 +22,7 @@ export function useChatSidebar() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
+  const { resumeText } = useResume();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -50,6 +51,15 @@ export function useChatSidebar() {
     }
 
     try {
+      // Set system message including resume context if exists
+      const systemContent = [
+        "My name is Read Me. I can answer all questions about Noopur's resume.",
+        "I am an AI assistant. Answer user questions using Noopur's resume below if possible.",
+        resumeText
+          ? `Resume reference (use to inform your answers):\n${resumeText.substring(0, 1600)}`
+          : ""
+      ].join("\n\n");
+
       const res = await fetch("/functions/v1/openai-chat", {
         method: "POST",
         headers: {
@@ -57,7 +67,7 @@ export function useChatSidebar() {
         },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: "You are a helpful AI assistant. Be concise, friendly, and provide accurate information." },
+            { role: "system", content: systemContent },
             ...toOpenAIMessages([...messages, userMessage])
           ],
         }),
