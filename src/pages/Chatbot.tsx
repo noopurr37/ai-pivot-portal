@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
 import { useChatAssistant } from "@/hooks/useChatAssistant";
+import ChatVoiceInputButton from "@/components/chat/ChatVoiceInputButton";
 
 export default function Chatbot() {
   const {
     messages,
     inputMessage,
     isLoading,
+    setInputMessage,
     handleSendMessage,
     handleKeyPress,
     handleInputChange,
@@ -56,15 +58,25 @@ export default function Chatbot() {
           isLoading={isLoading}
           messagesEndRef={messagesEndRef}
         />
-        <ChatInput
-          inputMessage={inputMessage}
-          onInputChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-          onSend={handleSendMessage}
-          textareaRef={textareaRef}
-          isLoading={isLoading}
-        />
+        <div className="flex gap-2 items-end px-2 pb-2">
+          <ChatVoiceInputButton
+            isLoading={isLoading}
+            onVoiceResult={setInputMessage}
+            className="mb-2"
+          />
+          <div className="flex-1">
+            <ChatInput
+              inputMessage={inputMessage}
+              onInputChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              onSend={handleSendMessage}
+              textareaRef={textareaRef}
+              isLoading={isLoading}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
