@@ -1,3 +1,4 @@
+
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
@@ -14,9 +15,11 @@ export default function Index() {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+
+  // FIX: Access setResumeText from ResumeContext
+  const { setResumeText } = useResume();
+
   const handlePersonalizeClick = () => {
     fileInputRef.current?.click();
   };
@@ -36,12 +39,14 @@ export default function Index() {
           setFilePreview(e.target?.result as string);
         };
         reader.readAsDataURL(file);
+        setResumeText(null);
       } else if (file.type.startsWith('video/')) {
         const reader = new FileReader();
         reader.onload = e => {
           setFilePreview(e.target?.result as string);
         };
         reader.readAsDataURL(file);
+        setResumeText(null);
       } else if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
         const reader = new FileReader();
         reader.onload = e => {
