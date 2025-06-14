@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
@@ -148,7 +147,7 @@ export default function Index() {
               <Upload className="h-4 w-4" />
             </Button>
             <Button onClick={handleChatbot} variant="secondary" className="w-full">
-              Mobi: Multimodal Bot integration
+              Multimodal Assistant
             </Button>
           </div>
         </div>
