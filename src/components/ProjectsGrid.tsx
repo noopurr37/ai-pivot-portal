@@ -12,7 +12,7 @@ type Project = {
 };
 
 type Props = {
-  projects: Project[];
+  projects: readonly Project[];
   onSelect: (project: Project | null) => void;
 };
 
