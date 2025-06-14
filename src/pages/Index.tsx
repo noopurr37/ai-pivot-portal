@@ -31,7 +31,7 @@ export default function Index() {
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-light tracking-tight">
             READ.ME
           </h1>
           <p className="text-xl text-muted-foreground">
