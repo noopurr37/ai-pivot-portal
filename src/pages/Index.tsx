@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
@@ -148,60 +147,57 @@ export default function Index() {
     }
   };
   return (
-    <ResumeProvider>
-      <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
-        <div className="max-w-2xl w-full space-y-8">
-          {/* Hero Headline */}
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-6xl font-light tracking-tight">
-              READ.ME
-            </h1>
-            <p className="text-slate-50 text-3xl font-thin">
-              Humanize your Resume through a Digital Twin Profile
-            </p>
-          </div>
-
-          {/* Chat Interface */}
-          <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
-            <div className="flex flex-col gap-4">
-              <input 
-                ref={fileInputRef} 
-                type="file" 
-                style={{ display: "none" }} 
-                onChange={handleFileChange} 
-                accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" 
-              />
-              <Button onClick={handlePersonalizeClick} variant="secondary" className="w-full flex items-center justify-center gap-2 rounded-lg">
-                Let Me Read Your Resume
-                <Upload className="h-4 w-4" />
-              </Button>
-              <Button onClick={handleChatbot} variant="secondary" className="w-full">
-                Open Chatbot
-              </Button>
-            </div>
-          </div>
-
-          {/* File Preview Section */}
-          {uploadedFile && (
-            <div className="bg-card p-6 rounded-lg shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">Uploaded File</h3>
-                <Button onClick={handleRemoveFile} variant="ghost" size="icon" className="h-8 w-8">
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  {uploadedFile.name} ({(uploadedFile.size / 1024).toFixed(1)} KB)
-                </p>
-                {renderFilePreview()}
-              </div>
-            </div>
-          )}
+    <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
+      <div className="max-w-2xl w-full space-y-8">
+        {/* Hero Headline */}
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl md:text-6xl font-light tracking-tight">
+            READ.ME
+          </h1>
+          <p className="text-slate-50 text-3xl font-thin">
+            Humanize your Resume through a Digital Twin Profile
+          </p>
         </div>
+
+        {/* Chat Interface */}
+        <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
+          <div className="flex flex-col gap-4">
+            <input 
+              ref={fileInputRef} 
+              type="file" 
+              style={{ display: "none" }} 
+              onChange={handleFileChange} 
+              accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" 
+            />
+            <Button onClick={handlePersonalizeClick} variant="secondary" className="w-full flex items-center justify-center gap-2 rounded-lg">
+              Let Me Read Your Resume
+              <Upload className="h-4 w-4" />
+            </Button>
+            <Button onClick={handleChatbot} variant="secondary" className="w-full">
+              Open Chatbot
+            </Button>
+          </div>
+        </div>
+
+        {/* File Preview Section */}
+        {uploadedFile && (
+          <div className="bg-card p-6 rounded-lg shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Uploaded File</h3>
+              <Button onClick={handleRemoveFile} variant="ghost" size="icon" className="h-8 w-8">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">
+                {uploadedFile.name} ({(uploadedFile.size / 1024).toFixed(1)} KB)
+              </p>
+              {renderFilePreview()}
+            </div>
+          </div>
+        )}
       </div>
-      
       <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-    </ResumeProvider>
+    </div>
   );
 }
