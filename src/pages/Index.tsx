@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -11,15 +10,7 @@ export default function Index() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSend = () => {
-    if (message.trim()) {
-      console.log("Sending message:", message);
-      // TODO: Implement chat functionality
-      setMessage("");
-    }
-  };
-
-  const handleUploadClick = () => {
+  const handlePersonalizeClick = () => {
     fileInputRef.current?.click();
   };
 
@@ -30,8 +21,10 @@ export default function Index() {
         title: "File selected",
         description: `You selected: ${file.name}`,
       });
-      // TODO: Add file upload logic here, e.g., upload to Supabase
+      // TODO: Add file upload logic here
       console.log("Selected file:", file);
+      // You may want to clear the file input here for UX reasons:
+      event.target.value = "";
     }
   };
 
@@ -54,34 +47,25 @@ export default function Index() {
 
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
-          {/* Move upload button above the Personalize button and center it */}
-          <div className="flex justify-center">
-            <Button
-              onClick={handleUploadClick}
-              variant="outline"
-              size="icon"
-              className="h-12 w-12 shrink-0"
-            >
-              <Upload className="h-4 w-4" />
-            </Button>
+          <div className="flex flex-col gap-4">
             <input
               ref={fileInputRef}
               type="file"
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
+            <Button
+              onClick={handlePersonalizeClick}
+              className="w-full flex items-center justify-center gap-2"
+              variant="secondary"
+            >
+              <Upload className="h-4 w-4" />
+              Personalize
+            </Button>
+            <Button onClick={handleChatbot} variant="secondary" className="w-full">
+              Open Chatbot
+            </Button>
           </div>
-          <Button
-            onClick={handleSend}
-            className="w-full"
-            disabled={!message.trim()}
-            variant="secondary"
-          >
-            Personalize
-          </Button>
-          <Button onClick={handleChatbot} variant="secondary" className="w-full">
-            Open Chatbot
-          </Button>
         </div>
       </div>
     </div>
