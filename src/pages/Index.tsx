@@ -20,10 +20,10 @@ export default function Index() {
         {/* Hero Headline */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Upload Your Resume
+            READ.ME 
           </h1>
           <p className="text-xl text-muted-foreground">
-            Humanize your Resume with a Digital Twin Profile
+            Humanize your Resume trough a Digital Twin Profile
           </p>
         </div>
 
