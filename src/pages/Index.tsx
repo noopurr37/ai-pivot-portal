@@ -27,7 +27,7 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-orange-400">
+    <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600">
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
         <div className="text-center space-y-4">
