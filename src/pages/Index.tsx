@@ -1,22 +1,37 @@
+
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { ChatSidebar } from "@/components/ChatSidebar";
 import { VideoPlayer } from "@/components/VideoPlayer";
-import { ResumeProvider, useResume } from "@/context/ResumeContext";
+import { useResume } from "@/context/ResumeContext";
 import { useNavigate } from "react-router-dom";
+import ChatMessages from "@/components/chat/ChatMessages";
+import ChatInput from "@/components/chat/ChatInput";
+import ChatVoiceInputButton from "@/components/chat/ChatVoiceInputButton";
+import { useChatAssistant } from "@/hooks/useChatAssistant";
 
 export default function Index() {
   const [message, setMessage] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Chat functionality
+  const {
+    messages,
+    inputMessage,
+    isLoading,
+    setInputMessage,
+    handleSendMessage,
+    handleKeyPress,
+    handleInputChange,
+    messagesEndRef,
+    textareaRef,
+  } = useChatAssistant();
 
   // FIX: Access setResumeText from ResumeContext
   const { setResumeText } = useResume();
@@ -161,7 +176,48 @@ export default function Index() {
             </div>
             {renderFilePreview()}
           </div>}
+
+        {/* Embedded Chat Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          {/* Chat Header */}
+          <div className="bg-yellow-100 dark:bg-yellow-900 border-b border-yellow-300 dark:border-yellow-800 text-yellow-900 dark:text-yellow-100 p-4 flex items-center gap-2">
+            <span className="text-sm">
+              <strong>My name is Read Me.</strong> I can answer all questions about resumes.
+            </span>
+          </div>
+          
+          {/* Chat Messages */}
+          <div className="h-96 flex flex-col">
+            <div className="flex-1 overflow-hidden">
+              <ChatMessages
+                messages={messages}
+                isLoading={isLoading}
+                messagesEndRef={messagesEndRef}
+              />
+            </div>
+            
+            {/* Chat Input */}
+            <div className="border-t bg-white dark:bg-gray-800 p-4">
+              <div className="flex gap-2 items-end">
+                <ChatVoiceInputButton
+                  isLoading={isLoading}
+                  onVoiceResult={setInputMessage}
+                  className="mb-2"
+                />
+                <div className="flex-1">
+                  <ChatInput
+                    inputMessage={inputMessage}
+                    onInputChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                    onSend={handleSendMessage}
+                    textareaRef={textareaRef}
+                    isLoading={isLoading}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>;
 }
