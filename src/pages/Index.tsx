@@ -59,8 +59,8 @@ export default function Index() {
               className="w-full flex items-center justify-center gap-2"
               variant="secondary"
             >
+              Let me read your resume
               <Upload className="h-4 w-4" />
-              Personalize
             </Button>
             <Button onClick={handleChatbot} variant="secondary" className="w-full">
               Open Chatbot
