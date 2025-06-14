@@ -174,7 +174,7 @@ export default function Index() {
               <Upload className="h-4 w-4" />
             </Button>
             <Button onClick={handleChatbot} variant="secondary" className="w-full">
-              Multimodal Bot
+              Mobi: Multimodal Bot integration
             </Button>
             <Button
               asChild
