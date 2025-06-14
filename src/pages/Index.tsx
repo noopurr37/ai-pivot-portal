@@ -6,6 +6,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ResumeProvider, useResume } from "@/context/ResumeContext";
+import { useNavigate } from "react-router-dom";
+
 export default function Index() {
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -13,6 +15,7 @@ export default function Index() {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
   const {
     toast
   } = useToast();
@@ -21,9 +24,11 @@ export default function Index() {
   const {
     setResumeText
   } = useResume();
+
   const handlePersonalizeClick = () => {
     fileInputRef.current?.click();
   };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -64,14 +69,17 @@ export default function Index() {
       event.target.value = "";
     }
   };
+
   const handleRemoveFile = () => {
     setUploadedFile(null);
     setFilePreview(null);
     setShowVideoPlayer(false);
   };
+
   const handleChatbot = () => {
-    setIsChatOpen(true);
+    navigate("/chatbot");
   };
+
   const renderFilePreview = () => {
     if (!uploadedFile || !filePreview) return null;
     if (uploadedFile.type.startsWith('image/')) {
@@ -122,6 +130,7 @@ export default function Index() {
         </div>;
     }
   };
+
   return <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
