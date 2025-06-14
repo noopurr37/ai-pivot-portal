@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useResume } from "@/context/ResumeContext";
@@ -136,5 +137,6 @@ export function useChatSidebar() {
     handleInputChange,
     messagesEndRef,
     textareaRef,
+    setInputMessage,
   };
 }
