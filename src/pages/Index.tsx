@@ -107,7 +107,7 @@ export default function Index() {
               display: "none"
             }} onChange={handleFileChange} accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" />
               <Button onClick={handlePersonalizeClick} variant="secondary" className="w-full flex items-center justify-center gap-2 rounded-lg">
-                Let me read your resume
+                Let Me Read Your Resume
                 <Upload className="h-4 w-4" />
               </Button>
               <Button onClick={handleChatbot} variant="secondary" className="w-full">
