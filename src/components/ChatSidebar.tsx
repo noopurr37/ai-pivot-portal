@@ -4,6 +4,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { useChatSidebar } from "@/hooks/useChatSidebar";
 import { ChatSidebarMessages } from "@/components/chat/ChatSidebarMessages";
 import { ChatSidebarInput } from "@/components/chat/ChatSidebarInput";
+import { useVoiceInput } from "@/hooks/useVoiceInput";
+import { useRef } from "react";
 
 interface ChatSidebarProps {
   isOpen: boolean;
@@ -20,7 +22,23 @@ export function ChatSidebar({ isOpen, onClose }: ChatSidebarProps) {
     handleInputChange,
     messagesEndRef,
     textareaRef,
+    setInputMessage,
   } = useChatSidebar();
+
+  // Use voice input
+  const lastInputMessageRef = useRef<string | null>(null);
+
+  const {
+    isRecording,
+    isTranscribing,
+    startRecording,
+    stopRecording,
+  } = useVoiceInput({
+    onResult: (text) => {
+      // Set the result to the input box
+      setInputMessage(text);
+    },
+  });
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -52,6 +70,10 @@ export function ChatSidebar({ isOpen, onClose }: ChatSidebarProps) {
           onSend={handleSendMessage}
           textareaRef={textareaRef}
           isLoading={isLoading}
+          isRecording={isRecording}
+          isTranscribing={isTranscribing}
+          onVoiceInput={startRecording}
+          onStopVoiceInput={stopRecording}
         />
       </SheetContent>
     </Sheet>
