@@ -1,13 +1,16 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Index() {
   const [message, setMessage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleSend = () => {
     if (message.trim()) {
@@ -17,9 +20,20 @@ export default function Index() {
     }
   };
 
-  const handleUpload = () => {
-    console.log("Upload button clicked");
-    // TODO: Implement file upload functionality
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      toast({
+        title: "File selected",
+        description: `You selected: ${file.name}`,
+      });
+      // TODO: Add file upload logic here, e.g., upload to Supabase
+      console.log("Selected file:", file);
+    }
   };
 
   const handleChatbot = () => {
@@ -42,9 +56,15 @@ export default function Index() {
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
           <div className="flex gap-2">
-            <Button onClick={handleUpload} variant="outline" size="icon" className="h-12 w-12 shrink-0">
+            <Button onClick={handleUploadClick} variant="outline" size="icon" className="h-12 w-12 shrink-0">
               <Upload className="h-4 w-4" />
             </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
           </div>
           <Button onClick={handleSend} className="w-full" disabled={!message.trim()}>
             Personalize
