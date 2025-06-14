@@ -6,7 +6,6 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ResumeProvider, useResume } from "@/context/ResumeContext";
-
 export default function Index() {
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -14,11 +13,14 @@ export default function Index() {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
 
   // FIX: Access setResumeText from ResumeContext
-  const { setResumeText } = useResume();
-
+  const {
+    setResumeText
+  } = useResume();
   const handlePersonalizeClick = () => {
     fileInputRef.current?.click();
   };
@@ -72,54 +74,31 @@ export default function Index() {
   };
   const renderFilePreview = () => {
     if (!uploadedFile || !filePreview) return null;
-
     if (uploadedFile.type.startsWith('image/')) {
-      return (
-        <div className="flex justify-center">
+      return <div className="flex justify-center">
           <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg">
-            <img 
-              src={filePreview} 
-              alt={uploadedFile.name} 
-              className="w-full h-full object-cover"
-            />
+            <img src={filePreview} alt={uploadedFile.name} className="w-full h-full object-cover" />
           </div>
-        </div>
-      );
+        </div>;
     } else if (uploadedFile.type.startsWith('video/')) {
       if (showVideoPlayer) {
-        return (
-          <VideoPlayer 
-            src={filePreview} 
-            fileName={uploadedFile.name}
-            onClose={() => setShowVideoPlayer(false)}
-          />
-        );
+        return <VideoPlayer src={filePreview} fileName={uploadedFile.name} onClose={() => setShowVideoPlayer(false)} />;
       } else {
-        return (
-          <div className="flex justify-center">
-            <div 
-              className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg cursor-pointer relative group"
-              onClick={() => setShowVideoPlayer(true)}
-            >
-              <video 
-                src={filePreview} 
-                className="w-full h-full object-cover"
-                muted
-              />
+        return <div className="flex justify-center">
+            <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg cursor-pointer relative group" onClick={() => setShowVideoPlayer(true)}>
+              <video src={filePreview} className="w-full h-full object-cover" muted />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="bg-white/90 rounded-full p-3">
                   <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                   </svg>
                 </div>
               </div>
             </div>
-          </div>
-        );
+          </div>;
       }
     } else if (uploadedFile.type.startsWith('text/') || uploadedFile.name.endsWith('.txt') || uploadedFile.name.endsWith('.md')) {
-      return (
-        <div className="flex justify-center">
+      return <div className="flex justify-center">
           <div className="w-64 h-64 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
             <div className="p-4 text-center overflow-y-auto max-h-full">
               <pre className="whitespace-pre-wrap text-xs leading-tight">
@@ -127,11 +106,9 @@ export default function Index() {
               </pre>
             </div>
           </div>
-        </div>
-      );
+        </div>;
     } else {
-      return (
-        <div className="flex justify-center">
+      return <div className="flex justify-center">
           <div className="w-64 h-64 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white shadow-lg flex items-center justify-center">
             <div className="text-center p-4">
               <p className="text-gray-600 dark:text-gray-400 font-medium">
@@ -142,12 +119,10 @@ export default function Index() {
               </p>
             </div>
           </div>
-        </div>
-      );
+        </div>;
     }
   };
-  return (
-    <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
+  return <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
         <div className="text-center space-y-4">
@@ -162,13 +137,9 @@ export default function Index() {
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
           <div className="flex flex-col gap-4">
-            <input 
-              ref={fileInputRef} 
-              type="file" 
-              style={{ display: "none" }} 
-              onChange={handleFileChange} 
-              accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" 
-            />
+            <input ref={fileInputRef} type="file" style={{
+            display: "none"
+          }} onChange={handleFileChange} accept="image/*,video/*,text/*,.txt,.md,.pdf,.doc,.docx" />
             <Button onClick={handlePersonalizeClick} variant="secondary" className="w-full flex items-center justify-center gap-2 rounded-lg">
               Let Me Read Your Resume
               <Upload className="h-4 w-4" />
@@ -180,8 +151,7 @@ export default function Index() {
         </div>
 
         {/* File Preview Section */}
-        {uploadedFile && (
-          <div className="bg-card p-6 rounded-lg shadow-lg">
+        {uploadedFile && <div className="bg-card p-6 rounded-lg shadow-lg">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Uploaded File</h3>
               <Button onClick={handleRemoveFile} variant="ghost" size="icon" className="h-8 w-8">
@@ -189,15 +159,13 @@ export default function Index() {
               </Button>
             </div>
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-sm ">
                 {uploadedFile.name} ({(uploadedFile.size / 1024).toFixed(1)} KB)
               </p>
               {renderFilePreview()}
             </div>
-          </div>
-        )}
+          </div>}
       </div>
       <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-    </div>
-  );
+    </div>;
 }
