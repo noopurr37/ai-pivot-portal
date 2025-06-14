@@ -149,7 +149,7 @@ export default function Index() {
     }
   };
   return <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-600">
-      <div className="max-w-2xl w-full space-y-8">
+      <div className="max-w-6xl w-full space-y-8">
         {/* Hero Headline */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl tracking-tight text-slate-100 font-thin md:text-7xl">
@@ -174,14 +174,35 @@ export default function Index() {
           </div>
         </div>
 
-        {/* File Preview Section */}
-        {uploadedFile && <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Button onClick={handleRemoveFile} variant="ghost" size="icon" className="h-8 w-8">
-                <X className="h-4 w-4" />
-              </Button>
+        {/* File Preview and Bio Section */}
+        {uploadedFile && <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            {/* File Preview */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Button onClick={handleRemoveFile} variant="ghost" size="icon" className="h-8 w-8">
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              {renderFilePreview()}
             </div>
-            {renderFilePreview()}
+            
+            {/* Bio Text */}
+            <div className="bg-white/90 dark:bg-gray-800/90 rounded-lg p-6 shadow-lg">
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  Noopur is a certified conversational designer, an artificial Intelligence enthusiast, speaker, pursuing a Master's in Computer Science, majoring in Machine Learning. and a full-time Systems Engineer.
+                </p>
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  She has been working with Chatbots since 2018. She architected LUIS(Language Understanding) empowered Chatbot/Voicebot using Microsoft Botnet Framework hosted in Azure. She has built FAQ chatbots in Azure and done live Demos of how to build a chatbot in Texas Digital Summit in May 2019 and the Texas DIR Conference in Sept 2019. She has developed FAQ/LUIS bot using dispatch with Microsoft Botnet framework in Python and hosted in Azure. She is NLU/Dialogflow and Conversation Designer certified organized by Chatbot conference. She is also very active in the voice community and attends Voice Lunch and Conversation design global events regularly. She has built video bots, bots in Google Dialogflow with bot copy front end. She has built prototypes in Voiceflow. She has also built a multi-turn context-based Finance bot in RASA.
+                </p>
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  She serves on the board of Austin Women in Technology as Technical Director and also serving as Fave 2021 judge in collaboration with Austin Young Chamber and Austin Technology Council. Noopur won first place in the Area contest and second place in Toastmasters International District 55 Table Topics (Impromptu Speaking) contest 2020.
+                </p>
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  Noopur's mission is to educate and prepare the workforce for the changes the world is heading towards. Her work is focused on understanding and exploring the entire form of Artificial Intelligence, and its implications in every industry.
+                </p>
+              </div>
+            </div>
           </div>}
 
         {/* Embedded Chat Section */}
@@ -217,5 +238,3 @@ export default function Index() {
       </div>
     </div>;
 }
-
-// ... end of file
