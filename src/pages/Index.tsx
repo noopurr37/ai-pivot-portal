@@ -1,12 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload } from "lucide-react";
-
 export default function Index() {
   const [message, setMessage] = useState("");
-
   const handleSend = () => {
     if (message.trim()) {
       console.log("Sending message:", message);
@@ -14,14 +11,11 @@ export default function Index() {
       setMessage("");
     }
   };
-
   const handleUpload = () => {
     console.log("Upload button clicked");
     // TODO: Implement file upload functionality
   };
-
-  return (
-    <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-orange-400">
+  return <div className="min-h-screen w-full text-foreground flex flex-col items-center justify-center px-4 bg-orange-400">
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Headline */}
         <div className="text-center space-y-4">
@@ -36,30 +30,15 @@ export default function Index() {
         {/* Chat Interface */}
         <div className="space-y-4 bg-card p-6 rounded-lg shadow-lg">
           <div className="flex gap-2">
-            <Textarea 
-              placeholder="Personalize your Digital Twin resume." 
-              value={message} 
-              onChange={e => setMessage(e.target.value)} 
-              className="min-h-[120px] resize-none flex-1" 
-            />
-            <Button 
-              onClick={handleUpload}
-              variant="outline"
-              size="icon"
-              className="h-12 w-12 shrink-0"
-            >
+            <Textarea placeholder="Personalize your Digital Twin resume." value={message} onChange={e => setMessage(e.target.value)} className="min-h-[120px] resize-none flex-1" />
+            <Button onClick={handleUpload} variant="outline" size="icon" className="h-12 w-12 shrink-0 text-4xl">
               <Upload className="h-4 w-4" />
             </Button>
           </div>
-          <Button 
-            onClick={handleSend} 
-            className="w-full" 
-            disabled={!message.trim()}
-          >
+          <Button onClick={handleSend} className="w-full" disabled={!message.trim()}>
             Personalize
           </Button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
